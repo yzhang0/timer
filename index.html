@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Timer</title>
+        <script>
+            // Load options for repetition
+            document.addEventListener('DOMContentLoaded', function() {
+                var select = document.getElementById("onetotwentyfive");
+                for (var i = 1; i <= 25; i++) {
+                    var option = document.createElement("option");
+                    option.text = i;
+                    option.value = i;
+                    select.appendChild(option);
+                }
+            });
+            // Count function for timer
+            let counter = 0;
+            let isMain = 1;
+            function count(timerange, timebreak) {
+                counter++;
+                // console.log(counter);
+                if (isMain == 1) {
+                    if (counter % timerange == 0) {
+                        document.querySelector('#message').innerHTML = `You have ${timebreak} sec for break`;
+                        counter = 0;
+                        isMain = 0;
+                    }
+                } else {
+                    if (counter % timebreak == 0) {
+                        document.querySelector('#message').innerHTML = `You have ${timerange} sec for workout`;
+                        counter = 0;
+                        isMain = 1;
+                    }
+                }
+                document.querySelector('#counter').innerHTML = counter;
+            }
+            // Main function
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelector('#form').onsubmit = function() {
+                    const rep = document.querySelector('#onetotwentyfive').value;
+                    const timerange = document.querySelector('#timerange').value;
+                    const timebreak = document.querySelector('#timebreak').value;
+                    const nloops = parseInt(rep)*(parseInt(timerange)+parseInt(timebreak));
+                    console.log(`Request for ${rep} repetitions of ${timerange} sec exercises and ${timebreak} sec break each`);
+                    document.querySelector('#message').innerHTML = `You have ${timerange} sec for workout`;
+                    var i = 0;
+                    var intervalID = setInterval( function() {
+                        count(timerange,timebreak);
+                        if (++i == nloops) {
+                            clearInterval(intervalID);
+                            document.querySelector('#message').innerHTML = `You are done!`;
+                        }
+                    }, 1000 );
+                    return false;
+                };
+            });
+        </script>
+        <title>My Website</title>
+    </head>
+    <body>
+        <form id="form">
+            <div>
+                <h4>Number of repetitions</h4>
+                <select id="onetotwentyfive">
+                </select>
+            </div>
+            <div>
+                <h4>Work out interval</h4>
+                <select id="timerange">
+                    <option value=5>5</option>
+                    <option value=60>60</option>
+                    <option value=90>90</option>
+                    <option value=120>120</option>
+                </select>
+            </div>
+            <div>
+                <h4>Break interval</h4>
+                <select id="timebreak">
+                    <option value=1>1</option>
+                    <option value=15>15</option>
+                    <option value=30>30</option>
+                </select>
+            </div>
+            <dir>
+                <input type="submit">
+            </dir>
+        </form>
+        <h1 id="counter">0</h1>
+        <h2 id="message"></h2>
+    </body>
+</html>
